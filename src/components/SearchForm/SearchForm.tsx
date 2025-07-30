@@ -1,19 +1,9 @@
 import React from "react";
 import { Radio, Select, TextField } from "../../ui";
+import { useSearchState } from "../../hooks";
 
 export const SearchForm: React.FC = () => {
-  const searchTypes = [
-    {
-      id: "continent-currency",
-      value: "continent-currency",
-      label: "Search by Continent and Currency",
-    },
-    {
-      id: "country-code",
-      value: "country-code",
-      label: "Search by Country Code",
-    },
-  ];
+  const { searchType, searchTypes, updateSearchType } = useSearchState();
 
   const continentOptions = [{ value: "EU", label: "Europe" }];
 
@@ -29,7 +19,8 @@ export const SearchForm: React.FC = () => {
               id={type.id}
               name="searchType"
               value={type.value}
-              checked={type.value === "continent-currency"}
+              checked={searchType === type.value}
+              onChange={() => updateSearchType(type.value)}
             />
             <label
               htmlFor={type.id}
@@ -42,19 +33,33 @@ export const SearchForm: React.FC = () => {
       </div>
 
       <div className="mt-6 space-y-4">
-        <div className="flex space-x-4">
-          <Select
-            id="continent"
-            options={continentOptions}
-            placeholder="Continent"
-          />
+        {searchType === "continent-currency" && (
+          <div className="flex space-x-4">
+            <Select
+              id="continent"
+              options={continentOptions}
+              placeholder="Continent"
+              value=""
+              onChange={() => {}}
+            />
+            <TextField
+              id="currency"
+              placeholder="Currency"
+              value=""
+              onChange={() => {}}
+              className="w-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        )}
+
+        {searchType === "country-code" && (
           <TextField
-            id="currency"
-            placeholder="Currency"
-            className="w-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            id="countryCode"
+            placeholder="Country Code"
+            value=""
+            onChange={() => {}}
           />
-        </div>
-        <TextField id="countryCode" placeholder="Country Code" />
+        )}
       </div>
     </div>
   );
