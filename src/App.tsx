@@ -2,34 +2,52 @@ import "./index.css";
 import { Layout } from "./ui";
 import { SearchForm, DataTable } from "./components";
 import { useTableState, useContinentOptions } from "./hooks";
+import { tableProcessing } from "./utils";
 import { useEffect } from "react";
 
-const mockData = {
+const mockContinentsResponse = {
   data: {
     continents: [
+      { code: "EU", name: "Europe" },
+      { code: "AS", name: "Asia" },
+      { code: "NA", name: "North America" },
+      { code: "SA", name: "South America" },
+      { code: "AF", name: "Africa" },
+      { code: "OC", name: "Oceania" },
+    ],
+  },
+};
+
+const mockCountriesResponse = {
+  data: {
+    countries: [
       {
-        code: "EU",
-        name: "Europe",
-        countries: [
-          {
-            code: "GB",
-            name: "United Kingdom",
-            capital: "London",
-            currency: "GBP",
-          },
-        ],
+        code: "GB",
+        name: "United Kingdom",
+        capital: "London",
+        currency: "GBP",
+        continent: { name: "Europe" },
       },
       {
-        code: "AS",
-        name: "Asia",
-        countries: [
-          {
-            code: "JP",
-            name: "Japan",
-            capital: "Tokyo",
-            currency: "JPY",
-          },
-        ],
+        code: "FR",
+        name: "France",
+        capital: "Paris",
+        currency: "EUR",
+        continent: { name: "Europe" },
+      },
+      {
+        code: "JP",
+        name: "Japan",
+        capital: "Tokyo",
+        currency: "JPY",
+        continent: { name: "Asia" },
+      },
+      {
+        code: "US",
+        name: "United States",
+        capital: "Washington, D.C.",
+        currency: "USD",
+        continent: { name: "North America" },
       },
     ],
   },
@@ -40,35 +58,18 @@ function App() {
   const { updateOptions } = useContinentOptions();
 
   useEffect(() => {
-    const continents = mockData.data.continents;
-
-    const continentOptions = continents.map((continent) => ({
-      value: continent.code,
-      label: continent.name,
-    }));
-
-    const dataMapping = [
-      { key: "continent", label: "Continent" },
-      { key: "code", label: "Code" },
-      { key: "name", label: "Country" },
-      { key: "capital", label: "Capital" },
-      { key: "currency", label: "Currency" },
-    ];
-
-    const tableData = continents.flatMap((continent) =>
-      continent.countries.map((country) => [
-        continent.name,
-        country.code,
-        country.name,
-        country.capital,
-        country.currency,
-      ])
+    const continentOptions = mockContinentsResponse.data.continents.map(
+      (continent) => ({
+        value: continent.code,
+        label: continent.name,
+      })
+    );
+    const { columns, data } = tableProcessing(
+      mockCountriesResponse.data.countries
     );
 
-    const columns = dataMapping.map((mapping) => mapping.label);
-
     updateColumns(columns);
-    updateData(tableData);
+    updateData(data);
     updateOptions(continentOptions);
   }, [updateColumns, updateData, updateOptions]);
 
