@@ -1,8 +1,8 @@
 import "./index.css";
 import { Layout } from "./ui";
 import { SearchForm, DataTable } from "./components";
-import { useTableState, useContinentOptions } from "./hooks";
-import { tableProcessing } from "./utils";
+import { useTableState, useContinentOptions, useFilterState } from "./hooks";
+import { tableProcessing, filterCountries } from "./utils";
 import { useEffect } from "react";
 
 const mockContinentsResponse = {
@@ -11,9 +11,6 @@ const mockContinentsResponse = {
       { code: "EU", name: "Europe" },
       { code: "AS", name: "Asia" },
       { code: "NA", name: "North America" },
-      { code: "SA", name: "South America" },
-      { code: "AF", name: "Africa" },
-      { code: "OC", name: "Oceania" },
     ],
   },
 };
@@ -54,24 +51,36 @@ const mockCountriesResponse = {
 };
 
 function App() {
-  const { updateData, updateColumns } = useTableState();
+  const { updateData, updateColumns, updateCountries, countries } =
+    useTableState();
   const { updateOptions } = useContinentOptions();
+  const { continent, currency, countryCode } = useFilterState();
 
   useEffect(() => {
     const continentOptions = mockContinentsResponse.data.continents.map(
       (continent) => ({
-        value: continent.code,
+        value: continent.name,
         label: continent.name,
       })
     );
-    const { columns, data } = tableProcessing(
-      mockCountriesResponse.data.countries
-    );
 
-    updateColumns(columns);
-    updateData(data);
+    updateCountries(mockCountriesResponse.data.countries);
     updateOptions(continentOptions);
-  }, [updateColumns, updateData, updateOptions]);
+  }, [updateCountries, updateOptions]);
+
+  useEffect(() => {
+    if (countries.length > 0) {
+      const filteredCountries = filterCountries(countries, {
+        continent,
+        currency,
+        countryCode,
+      });
+      const { columns, data } = tableProcessing(filteredCountries);
+
+      updateColumns(columns);
+      updateData(data);
+    }
+  }, [countries, continent, currency, countryCode, updateColumns, updateData]);
 
   return (
     <Layout>

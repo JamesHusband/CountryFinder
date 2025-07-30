@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil";
 import { useCallback } from "react";
 import { tableState } from "../../state";
+import type { Country } from "../../types";
 
 export const useTableState = () => {
   const [state, setState] = useRecoilState(tableState);
@@ -19,11 +20,19 @@ export const useTableState = () => {
     [setState]
   );
 
+  const updateCountries = useCallback(
+    (countries: Country[]) => {
+      setState((prev) => ({ ...prev, countries }));
+    },
+    [setState]
+  );
+
   const resetTable = useCallback(() => {
     setState((prev) => ({
       ...prev,
       data: [],
       columns: [],
+      countries: [],
     }));
   }, [setState]);
 
@@ -31,6 +40,7 @@ export const useTableState = () => {
     ...state,
     updateData,
     updateColumns,
+    updateCountries,
     resetTable,
   };
 };

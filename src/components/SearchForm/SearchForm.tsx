@@ -2,7 +2,11 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import type { FieldProps } from "formik";
 import { Radio, Select, TextField } from "../../ui";
-import { useSearchState, useContinentOptions } from "../../hooks";
+import {
+  useSearchState,
+  useContinentOptions,
+  useFilterState,
+} from "../../hooks";
 
 interface FormValues {
   continent: string;
@@ -14,11 +18,19 @@ export const SearchForm: React.FC = () => {
   const { searchType, searchTypes, updateSearchType } = useSearchState();
 
   const { options: continentOptions } = useContinentOptions();
+  const {
+    continent,
+    currency,
+    countryCode,
+    updateContinent,
+    updateCurrency,
+    updateCountryCode,
+  } = useFilterState();
 
   const initialValues: FormValues = {
-    continent: "",
-    currency: "",
-    countryCode: "",
+    continent: continent,
+    currency: currency,
+    countryCode: countryCode,
   };
 
   return (
@@ -49,7 +61,7 @@ export const SearchForm: React.FC = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={() => {}}
-        enableReinitialize={false}
+        enableReinitialize={true}
       >
         <Form>
           <div className="mt-6 space-y-4">
@@ -62,7 +74,10 @@ export const SearchForm: React.FC = () => {
                       options={continentOptions}
                       placeholder="Continent"
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        updateContinent(e.target.value);
+                      }}
                       onBlur={field.onBlur}
                     />
                   )}
@@ -73,7 +88,10 @@ export const SearchForm: React.FC = () => {
                       id="currency"
                       placeholder="Currency"
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        updateCurrency(e.target.value);
+                      }}
                       onBlur={field.onBlur}
                       className="w-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
@@ -89,7 +107,10 @@ export const SearchForm: React.FC = () => {
                     id="countryCode"
                     placeholder="Country Code"
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      updateCountryCode(e.target.value);
+                    }}
                     onBlur={field.onBlur}
                   />
                 )}
