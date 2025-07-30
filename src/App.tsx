@@ -1,7 +1,12 @@
 import "./index.css";
+import { Layout } from "./components";
 
 function App() {
-  return <></>;
+  return (
+    <Layout>
+      <></>
+    </Layout>
+  );
 }
 
 export default App;
