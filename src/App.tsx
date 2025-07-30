@@ -1,10 +1,10 @@
 import "./index.css";
-import { Layout } from "./components";
+import { Layout, SearchForm } from "./components";
 
 function App() {
   return (
     <Layout>
-      <></>
+      <SearchForm />
     </Layout>
   );
 }
