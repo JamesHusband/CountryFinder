@@ -1,3 +1,3 @@
-export * from "./Form";
+export * from "./form";
 export * from "./Table";
 export * from "./Layout";
