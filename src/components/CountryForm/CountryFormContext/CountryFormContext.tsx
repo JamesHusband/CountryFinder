@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { Select, TextField } from "../../../ui";
+import { Select, TextField, Button } from "../../../ui";
 import { SearchTypes } from "../SearchTypes";
 import {
   useSearchState,
@@ -72,6 +72,15 @@ export const CountryFormContext: React.FC = () => {
     updateCurrency(value);
   };
 
+  const handleClearFilters = () => {
+    setFieldValue("continent", "");
+    setFieldValue("currency", "");
+    updateContinent("");
+    updateCurrency("");
+  };
+
+  const hasActiveFilters = values.continent || values.currency;
+
   return (
     <>
       <SearchTypes
@@ -81,21 +90,28 @@ export const CountryFormContext: React.FC = () => {
 
       <div className="mt-6 space-y-4">
         {values.searchType === "continent-currency" && (
-          <div className="flex flex-row space-x-4">
-            <Select
-              id="continent"
-              options={continentOptions}
-              placeholder="Continent"
-              value={values.continent}
-              onChange={(e) => handleContinentChange(e.target.value)}
-            />
-            <Select
-              id="currency"
-              options={currencyOptions}
-              placeholder="Currency"
-              value={values.currency}
-              onChange={(e) => handleCurrencyChange(e.target.value)}
-            />
+          <div className="space-y-3">
+            <div className="flex flex-row space-x-4">
+              <Select
+                id="continent"
+                options={continentOptions}
+                placeholder="Continent"
+                value={values.continent}
+                onChange={(e) => handleContinentChange(e.target.value)}
+              />
+              <Select
+                id="currency"
+                options={currencyOptions}
+                placeholder="Currency"
+                value={values.currency}
+                onChange={(e) => handleCurrencyChange(e.target.value)}
+              />
+            </div>
+            {hasActiveFilters && (
+              <Button variant="text" size="sm" onClick={handleClearFilters}>
+                Clear Filters
+              </Button>
+            )}
           </div>
         )}
 
