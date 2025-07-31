@@ -8,7 +8,9 @@ import {
   useCurrencyOptions,
   useFilterState,
   useDebouncedSearch,
+  useTableState,
 } from "../../../hooks";
+import { extractUniqueCurrencies } from "../../../utils/currencyFilter";
 
 interface FormValues {
   searchType: "continent-currency" | "country-code" | "country-name";
@@ -28,7 +30,12 @@ export const CountryFormContext: React.FC = () => {
   } = useFilterState();
   const { updateSearchType } = useSearchState();
   const { options: continentOptions } = useContinentOptions();
-  const { options: currencyOptions } = useCurrencyOptions();
+  const {
+    options: currencyOptions,
+    updateOptionsByContinent,
+    updateOptions: updateCurrencyOptions,
+  } = useCurrencyOptions();
+  const { countries } = useTableState();
 
   const {
     searchValue: debouncedCountryCode,
@@ -65,6 +72,13 @@ export const CountryFormContext: React.FC = () => {
   const handleContinentChange = (value: string) => {
     setFieldValue("continent", value);
     updateContinent(value);
+
+    setFieldValue("currency", "");
+    updateCurrency("");
+
+    if (value) {
+      updateOptionsByContinent(countries, value);
+    }
   };
 
   const handleCurrencyChange = (value: string) => {
@@ -77,6 +91,14 @@ export const CountryFormContext: React.FC = () => {
     setFieldValue("currency", "");
     updateContinent("");
     updateCurrency("");
+
+    const allCurrencyOptions = extractUniqueCurrencies(countries).map(
+      (currency) => ({
+        value: currency,
+        label: currency,
+      })
+    );
+    updateCurrencyOptions(allCurrencyOptions);
   };
 
   const hasActiveFilters = values.continent || values.currency;

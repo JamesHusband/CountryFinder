@@ -42,11 +42,12 @@ function App() {
     if (fetchedCountries.length > 0) {
       updateCountries(fetchedCountries);
 
-      const uniqueCurrencies = extractUniqueCurrencies(fetchedCountries);
-      const currencyOptions = uniqueCurrencies.map((currency) => ({
-        value: currency,
-        label: currency,
-      }));
+      const currencyOptions = extractUniqueCurrencies(fetchedCountries).map(
+        (currency) => ({
+          value: currency,
+          label: currency,
+        })
+      );
       updateCurrencyOptions(currencyOptions);
     }
   }, [fetchedCountries, updateCountries, updateCurrencyOptions]);
