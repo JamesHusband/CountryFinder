@@ -20,7 +20,7 @@ function App() {
     useTableState();
   const { updateOptions: updateContinentOptions } = useContinentOptions();
   const { updateOptions: updateCurrencyOptions } = useCurrencyOptions();
-  const { continent, currency, countryCode } = useFilterState();
+  const { continent, currency, countryCode, countryName } = useFilterState();
   const {
     countries: fetchedCountries,
     continents: fetchedContinents,
@@ -52,18 +52,25 @@ function App() {
   }, [fetchedCountries, updateCountries, updateCurrencyOptions]);
 
   useEffect(() => {
-    if (countries.length > 0) {
-      const filteredCountries = filterCountries(countries, {
-        continent,
-        currency,
-        countryCode,
-      });
-      const { columns, data } = tableProcessing(filteredCountries);
+    const filteredCountries = filterCountries(countries, {
+      continent,
+      currency,
+      countryCode,
+      countryName,
+    });
+    const { columns, data } = tableProcessing(filteredCountries);
 
-      updateColumns(columns);
-      updateData(data);
-    }
-  }, [countries, continent, currency, countryCode, updateColumns, updateData]);
+    updateColumns(columns);
+    updateData(data);
+  }, [
+    countries,
+    continent,
+    currency,
+    countryCode,
+    countryName,
+    updateColumns,
+    updateData,
+  ]);
 
   if (loading) {
     return (

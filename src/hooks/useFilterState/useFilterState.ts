@@ -26,12 +26,21 @@ export const useFilterState = () => {
     [setState]
   );
 
+  const updateCountryName = useCallback(
+    (countryName: string) => {
+      setState((prev) => ({ ...prev, countryName }));
+    },
+    [setState]
+  );
+
   const clearFilters = useCallback(() => {
-    setState({
+    setState((prev) => ({
+      ...prev,
       continent: "",
       currency: "",
       countryCode: "",
-    });
+      countryName: "",
+    }));
   }, [setState]);
 
   return {
@@ -39,6 +48,7 @@ export const useFilterState = () => {
     updateContinent,
     updateCurrency,
     updateCountryCode,
+    updateCountryName,
     clearFilters,
   };
 };

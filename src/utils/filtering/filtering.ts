@@ -24,6 +24,13 @@ export const filterCountries = (
       return false;
     }
 
+    if (
+      filters.countryName &&
+      !country.name.toLowerCase().includes(filters.countryName.toLowerCase())
+    ) {
+      return false;
+    }
+
     return true;
   });
 };

@@ -4,10 +4,11 @@ import { SearchFormContext } from "./SearchFormContext";
 import { useSearchState, useFilterState } from "../../hooks";
 
 interface FormValues {
-  searchType: "continent-currency" | "country-code";
+  searchType: "continent-currency" | "country-code" | "country-name";
   continent: string;
   currency: string;
   countryCode: string;
+  countryName: string;
 }
 
 export const SearchForm: React.FC = () => {
@@ -19,6 +20,7 @@ export const SearchForm: React.FC = () => {
     continent: continent,
     currency: currency,
     countryCode: countryCode,
+    countryName: "",
   };
 
   return (

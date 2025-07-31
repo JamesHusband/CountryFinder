@@ -1,13 +1,18 @@
 import { atom } from "recoil";
 
-interface SearchType {
+export type SearchTypeValue =
+  | "continent-currency"
+  | "country-code"
+  | "country-name";
+
+export interface SearchType {
   id: string;
-  value: "continent-currency" | "country-code";
+  value: SearchTypeValue;
   label: string;
 }
 
 export interface SearchState {
-  searchType: "continent-currency" | "country-code";
+  searchType: SearchTypeValue;
   searchTypes: SearchType[];
 }
 
@@ -25,6 +30,11 @@ export const searchState = atom<SearchState>({
         id: "country-code",
         value: "country-code",
         label: "Search by Country Code",
+      },
+      {
+        id: "country-name",
+        value: "country-name",
+        label: "Search by Country Name",
       },
     ],
   },

@@ -11,16 +11,21 @@ import {
 } from "../../../hooks";
 
 interface FormValues {
-  searchType: "continent-currency" | "country-code";
+  searchType: "continent-currency" | "country-code" | "country-name";
   continent: string;
   currency: string;
   countryCode: string;
+  countryName: string;
 }
 
 export const SearchFormContext: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<FormValues>();
-  const { updateContinent, updateCurrency, updateCountryCode } =
-    useFilterState();
+  const {
+    updateContinent,
+    updateCurrency,
+    updateCountryCode,
+    updateCountryName,
+  } = useFilterState();
   const { updateSearchType } = useSearchState();
   const { options: continentOptions } = useContinentOptions();
   const { options: currencyOptions } = useCurrencyOptions();
@@ -33,8 +38,16 @@ export const SearchFormContext: React.FC = () => {
     onSearch: updateCountryCode,
   });
 
+  const {
+    searchValue: debouncedCountryName,
+    handleSearchChange: handleCountryNameChange,
+  } = useDebouncedSearch({
+    delay: 300,
+    onSearch: updateCountryName,
+  });
+
   const handleSearchTypeChange = (
-    value: "continent-currency" | "country-code"
+    value: "continent-currency" | "country-code" | "country-name"
   ) => {
     setFieldValue("searchType", value);
     updateSearchType(value);
@@ -83,6 +96,15 @@ export const SearchFormContext: React.FC = () => {
             placeholder="Country Code"
             value={debouncedCountryCode}
             onChange={(e) => handleCountryCodeChange(e.target.value)}
+          />
+        )}
+
+        {values.searchType === "country-name" && (
+          <TextField
+            id="countryName"
+            placeholder="Country Name"
+            value={debouncedCountryName}
+            onChange={(e) => handleCountryNameChange(e.target.value)}
           />
         )}
       </div>

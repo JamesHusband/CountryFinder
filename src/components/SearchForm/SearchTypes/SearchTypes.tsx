@@ -4,7 +4,9 @@ import { useSearchState } from "../../../hooks";
 
 interface SearchTypesProps {
   selectedType: string;
-  onTypeChange: (value: "continent-currency" | "country-code") => void;
+  onTypeChange: (
+    value: "continent-currency" | "country-code" | "country-name"
+  ) => void;
 }
 
 export const SearchTypes: React.FC<SearchTypesProps> = ({
@@ -26,7 +28,10 @@ export const SearchTypes: React.FC<SearchTypesProps> = ({
               checked={selectedType === type.value}
               onChange={() =>
                 onTypeChange(
-                  type.value as "continent-currency" | "country-code"
+                  type.value as
+                    | "continent-currency"
+                    | "country-code"
+                    | "country-name"
                 )
               }
               label={type.label}

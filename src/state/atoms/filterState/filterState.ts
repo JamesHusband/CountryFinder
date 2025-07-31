@@ -4,6 +4,7 @@ export interface FilterState {
   continent: string;
   currency: string;
   countryCode: string;
+  countryName: string;
 }
 
 export const filterState = atom<FilterState>({
@@ -12,5 +13,6 @@ export const filterState = atom<FilterState>({
     continent: "",
     currency: "",
     countryCode: "",
+    countryName: "",
   },
 });
