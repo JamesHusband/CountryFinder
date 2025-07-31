@@ -50,7 +50,7 @@ export const SearchForm: React.FC = () => {
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           Search Type
         </h3>
-        <div className="flex space-x-4">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
           {searchTypes.map((type) => (
             <div key={type.id} className="flex items-center">
               <Radio
@@ -79,7 +79,7 @@ export const SearchForm: React.FC = () => {
         <Form>
           <div className="mt-6 space-y-4">
             {searchType === "continent-currency" && (
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <Field name="continent">
                   {({ field }: FieldProps<string>) => (
                     <Select
