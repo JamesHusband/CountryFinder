@@ -27,20 +27,10 @@ export const useTableState = () => {
     [setState]
   );
 
-  const resetTable = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      data: [],
-      columns: [],
-      countries: [],
-    }));
-  }, [setState]);
-
   return {
     ...state,
     updateData,
     updateColumns,
     updateCountries,
-    resetTable,
   };
 };

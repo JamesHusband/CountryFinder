@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { debounce } from "../../utils/debounce";
 
 interface UseDebouncedSearchOptions {
   delay?: number;
@@ -13,9 +12,12 @@ export const useDebouncedSearch = ({
   const [searchValue, setSearchValue] = useState("");
 
   const debouncedSearch = useCallback(
-    debounce((value: string) => {
-      onSearch(value);
-    }, delay),
+    (value: string) => {
+      const timeoutId = setTimeout(() => {
+        onSearch(value);
+      }, delay);
+      return () => clearTimeout(timeoutId);
+    },
     [onSearch, delay]
   );
 
