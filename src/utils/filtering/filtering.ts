@@ -10,10 +10,7 @@ export const filterCountries = (
       return false;
     }
 
-    if (
-      filters.currency &&
-      !country.currency.toLowerCase().includes(filters.currency.toLowerCase())
-    ) {
+    if (filters.currency && country.currency !== filters.currency) {
       return false;
     }
 

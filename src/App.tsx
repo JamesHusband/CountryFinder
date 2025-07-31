@@ -4,16 +4,22 @@ import { SearchForm, DataTable } from "./components";
 import {
   useTableState,
   useContinentOptions,
+  useCurrencyOptions,
   useFilterState,
   useCountryData,
 } from "./hooks";
-import { tableProcessing, filterCountries } from "./utils";
+import {
+  tableProcessing,
+  filterCountries,
+  extractUniqueCurrencies,
+} from "./utils";
 import { useEffect } from "react";
 
 function App() {
   const { updateData, updateColumns, updateCountries, countries } =
     useTableState();
-  const { updateOptions } = useContinentOptions();
+  const { updateOptions: updateContinentOptions } = useContinentOptions();
+  const { updateOptions: updateCurrencyOptions } = useCurrencyOptions();
   const { continent, currency, countryCode } = useFilterState();
   const {
     countries: fetchedCountries,
@@ -28,15 +34,23 @@ function App() {
         value: continent.name,
         label: continent.name,
       }));
-      updateOptions(continentOptions);
+      updateContinentOptions(continentOptions);
     }
-  }, [fetchedContinents, updateOptions]);
+  }, [fetchedContinents, updateContinentOptions]);
 
   useEffect(() => {
     if (fetchedCountries.length > 0) {
       updateCountries(fetchedCountries);
+
+      const currencyOptions = extractUniqueCurrencies(fetchedCountries).map(
+        (currency) => ({
+          value: currency,
+          label: currency,
+        })
+      );
+      updateCurrencyOptions(currencyOptions);
     }
-  }, [fetchedCountries, updateCountries]);
+  }, [fetchedCountries, updateCountries, updateCurrencyOptions]);
 
   useEffect(() => {
     if (countries.length > 0) {
