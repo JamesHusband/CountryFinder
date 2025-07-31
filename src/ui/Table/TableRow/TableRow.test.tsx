@@ -4,10 +4,14 @@ import { TableRow } from "./TableRow";
 describe("TableRow", () => {
   it("renders children correctly", () => {
     render(
-      <TableRow>
-        <td data-testid="test-cell">Test Cell</td>
-        <td>Another Cell</td>
-      </TableRow>
+      <table>
+        <tbody>
+          <TableRow>
+            <td data-testid="test-cell">Test Cell</td>
+            <td>Another Cell</td>
+          </TableRow>
+        </tbody>
+      </table>
     );
 
     expect(screen.getByTestId("test-cell")).toBeInTheDocument();
@@ -17,9 +21,13 @@ describe("TableRow", () => {
 
   it("renders row with single cell", () => {
     render(
-      <TableRow>
-        <td>Single Cell</td>
-      </TableRow>
+      <table>
+        <tbody>
+          <TableRow>
+            <td>Single Cell</td>
+          </TableRow>
+        </tbody>
+      </table>
     );
 
     expect(screen.getByText("Single Cell")).toBeInTheDocument();

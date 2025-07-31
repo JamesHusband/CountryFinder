@@ -5,7 +5,11 @@ describe("TableHeader", () => {
   it("renders columns correctly", () => {
     const columns = ["Name", "Code", "Continent", "Currency"];
 
-    render(<TableHeader columns={columns} />);
+    render(
+      <table>
+        <TableHeader columns={columns} />
+      </table>
+    );
 
     expect(screen.getByText("Name")).toBeInTheDocument();
     expect(screen.getByText("Code")).toBeInTheDocument();
@@ -14,7 +18,11 @@ describe("TableHeader", () => {
   });
 
   it("renders empty columns array", () => {
-    render(<TableHeader columns={[]} />);
+    render(
+      <table>
+        <TableHeader columns={[]} />
+      </table>
+    );
 
     const thead = screen.getByRole("rowgroup");
     expect(thead).toBeInTheDocument();
