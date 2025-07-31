@@ -10,7 +10,10 @@ export const filterCountries = (
       return false;
     }
 
-    if (filters.currency && country.currency !== filters.currency) {
+    if (
+      filters.currency &&
+      (!country.currency || !country.currency.includes(filters.currency))
+    ) {
       return false;
     }
 
