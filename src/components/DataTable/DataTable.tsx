@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "../../ui";
+import { Table, ItemCount } from "../../ui";
 import { useTableState, usePagination } from "../../hooks";
 
 const ENTRIES_PER_PAGE_OPTIONS = [
@@ -29,17 +29,20 @@ export const DataTable: React.FC = () => {
   };
 
   return (
-    <Table
-      columns={columns}
-      data={paginatedData}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      entriesPerPage={entriesPerPage}
-      entriesPerPageOptions={ENTRIES_PER_PAGE_OPTIONS}
-      onPageChange={handlePageChange}
-      onEntriesPerPageChange={onEntriesPerPageChange}
-      onPreviousPage={goToPreviousPage}
-      onNextPage={goToNextPage}
-    />
+    <div className="space-y-4">
+      <ItemCount count={data.length} />
+      <Table
+        columns={columns}
+        data={paginatedData}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        entriesPerPage={entriesPerPage}
+        entriesPerPageOptions={ENTRIES_PER_PAGE_OPTIONS}
+        onPageChange={handlePageChange}
+        onEntriesPerPageChange={onEntriesPerPageChange}
+        onPreviousPage={goToPreviousPage}
+        onNextPage={goToNextPage}
+      />
+    </div>
   );
 };
