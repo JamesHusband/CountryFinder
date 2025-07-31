@@ -22,7 +22,9 @@ The specification was unclear regarding bi-directional URL synchronization. I im
 The specification states "Filters should be combinable" but was ambiguous about scope. I interpreted this to mean:
 
 - **Continent & Currency**: These filters work together within the same search type
-- **Search Type Switching**: Each search type (Continent & Currency, Country Code, Country Name) operates independently with cleared state when switching between types
+- **Search Type Switching**: Each search type (Continent & Currency, Country Code, Country Name) operates independently with cleared state when switching between types.
+
+I have published a branch where state persists between search types.
 
 ### Country Name Search
 
