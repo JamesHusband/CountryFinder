@@ -58,15 +58,6 @@ export const CountryFormContext: React.FC = () => {
   ) => {
     setFieldValue("searchType", value);
     updateSearchType(value);
-
-    setFieldValue("continent", "");
-    setFieldValue("currency", "");
-    setFieldValue("countryCode", "");
-    setFieldValue("countryName", "");
-    updateContinent("");
-    updateCurrency("");
-    updateCountryCode("");
-    updateCountryName("");
   };
 
   const handleContinentChange = (value: string) => {

@@ -19,10 +19,7 @@ The specification was unclear regarding bi-directional URL synchronization. I im
 
 ### Filter Combination
 
-The specification states "Filters should be combinable" but was ambiguous about scope. I interpreted this to mean:
-
-- **Continent & Currency**: These filters work together within the same search type
-- **Search Type Switching**: Each search type (Continent & Currency, Country Code, Country Name) operates independently with cleared state when switching between types
+The specification states "Filters should be combinable" but was ambiguous about scope. This branch does not clear state between search types, allowing filters to persist across different search types for more filtering capabilities.
 
 ### Country Name Search
 
