@@ -1,0 +1,1 @@
+export { EntriesPerPage } from "./EntriesPerPage";
