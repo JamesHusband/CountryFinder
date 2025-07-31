@@ -1,5 +1,5 @@
 import "./index.css";
-import { Layout } from "./ui";
+import { Layout, Status } from "./ui";
 import { SearchForm, DataTable } from "./components";
 import {
   useTableState,
@@ -11,27 +11,32 @@ import { tableProcessing, filterCountries } from "./utils";
 import { useEffect } from "react";
 
 function App() {
-  const { updateData, updateColumns, updateCountries } = useTableState();
+  const { updateData, updateColumns, updateCountries, countries } =
+    useTableState();
   const { updateOptions } = useContinentOptions();
   const { continent, currency, countryCode } = useFilterState();
-  const { countries, continents, loading, error } = useCountryData();
+  const {
+    countries: fetchedCountries,
+    continents: fetchedContinents,
+    loading,
+    error,
+  } = useCountryData();
 
   useEffect(() => {
-    if (continents.length > 0) {
-      const continentOptions = continents.map((continent) => ({
+    if (fetchedContinents.length > 0) {
+      const continentOptions = fetchedContinents.map((continent) => ({
         value: continent.name,
         label: continent.name,
       }));
-
       updateOptions(continentOptions);
     }
-  }, [continents, updateOptions]);
+  }, [fetchedContinents, updateOptions]);
 
   useEffect(() => {
-    if (countries.length > 0) {
-      updateCountries(countries);
+    if (fetchedCountries.length > 0) {
+      updateCountries(fetchedCountries);
     }
-  }, [countries, updateCountries]);
+  }, [fetchedCountries, updateCountries]);
 
   useEffect(() => {
     if (countries.length > 0) {
@@ -50,9 +55,7 @@ function App() {
   if (loading) {
     return (
       <Layout>
-        <div className="flex justify-center items-center h-64">
-          <div className="text-lg text-gray-600">Loading countries data...</div>
-        </div>
+        <Status type="loading" message="Loading countries data..." />
       </Layout>
     );
   }
@@ -60,11 +63,7 @@ function App() {
   if (error) {
     return (
       <Layout>
-        <div className="flex justify-center items-center h-64">
-          <div className="text-lg text-red-600">
-            Error loading data: {error.message}
-          </div>
-        </div>
+        <Status type="error" message="Error loading data" error={error} />
       </Layout>
     );
   }
