@@ -7,6 +7,7 @@ import {
   useContinentOptions,
   useCurrencyOptions,
   useFilterState,
+  useDebouncedSearch,
 } from "../../hooks";
 
 interface FormValues {
@@ -28,6 +29,14 @@ export const SearchForm: React.FC = () => {
     updateCurrency,
     updateCountryCode,
   } = useFilterState();
+
+  const {
+    searchValue: debouncedCountryCode,
+    handleSearchChange: handleCountryCodeChange,
+  } = useDebouncedSearch({
+    delay: 300,
+    onSearch: updateCountryCode,
+  });
 
   const initialValues: FormValues = {
     continent: continent,
@@ -110,10 +119,10 @@ export const SearchForm: React.FC = () => {
                   <TextField
                     id="countryCode"
                     placeholder="Country Code"
-                    value={field.value}
+                    value={debouncedCountryCode}
                     onChange={(e) => {
                       field.onChange(e);
-                      updateCountryCode(e.target.value);
+                      handleCountryCodeChange(e.target.value);
                     }}
                     onBlur={field.onBlur}
                   />
