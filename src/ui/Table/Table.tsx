@@ -31,32 +31,36 @@ export const Table: React.FC<TableProps> = ({
   onNextPage,
 }) => {
   return (
-    <div>
-      <TableWrapper>
-        <TableHeader columns={columns} />
-        <TableBody>
-          {data.map((row: string[], rowIndex: number) => (
-            <TableRow key={rowIndex}>
-              {row.map((cell: string, cellIndex: number) => (
-                <td key={cellIndex} className="px-6 py-4 whitespace-nowrap">
-                  {cell}
-                </td>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </TableWrapper>
+    <div className="grid grid-rows-[auto_1fr_auto] gap-4">
+      <div className="order-1 sm:order-3">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          entriesPerPage={entriesPerPage}
+          entriesPerPageOptions={entriesPerPageOptions}
+          onPageChange={onPageChange}
+          onEntriesPerPageChange={onEntriesPerPageChange}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+        />
+      </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        entriesPerPage={entriesPerPage}
-        entriesPerPageOptions={entriesPerPageOptions}
-        onPageChange={onPageChange}
-        onEntriesPerPageChange={onEntriesPerPageChange}
-        onPreviousPage={onPreviousPage}
-        onNextPage={onNextPage}
-      />
+      <div className="order-2 overflow-x-auto">
+        <TableWrapper>
+          <TableHeader columns={columns} />
+          <TableBody>
+            {data.map((row: string[], rowIndex: number) => (
+              <TableRow key={rowIndex}>
+                {row.map((cell: string, cellIndex: number) => (
+                  <td key={cellIndex} className="px-6 py-4 whitespace-nowrap">
+                    {cell}
+                  </td>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableWrapper>
+      </div>
     </div>
   );
 };

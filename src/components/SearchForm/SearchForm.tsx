@@ -52,20 +52,15 @@ export const SearchForm: React.FC = () => {
         </h3>
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
           {searchTypes.map((type) => (
-            <div key={type.id} className="flex items-center">
+            <div key={type.id} className="p-2">
               <Radio
                 id={type.id}
                 name="searchType"
                 value={type.value}
                 checked={searchType === type.value}
                 onChange={() => updateSearchType(type.value)}
+                label={type.label}
               />
-              <label
-                htmlFor={type.id}
-                className="text-sm font-medium text-gray-700"
-              >
-                {type.label}
-              </label>
             </div>
           ))}
         </div>
@@ -79,7 +74,7 @@ export const SearchForm: React.FC = () => {
         <Form>
           <div className="mt-6 space-y-4">
             {searchType === "continent-currency" && (
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+              <div className="flex flex-row space-x-4">
                 <Field name="continent">
                   {({ field }: FieldProps<string>) => (
                     <Select
