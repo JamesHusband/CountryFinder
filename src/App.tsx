@@ -1,128 +1,37 @@
 import "./index.css";
 import { Layout } from "./ui";
 import { SearchForm, DataTable } from "./components";
-import { useTableState, useContinentOptions, useFilterState } from "./hooks";
+import {
+  useTableState,
+  useContinentOptions,
+  useFilterState,
+  useCountryData,
+} from "./hooks";
 import { tableProcessing, filterCountries } from "./utils";
 import { useEffect } from "react";
 
-const mockContinentsResponse = {
-  data: {
-    continents: [
-      { code: "EU", name: "Europe" },
-      { code: "AS", name: "Asia" },
-      { code: "NA", name: "North America" },
-    ],
-  },
-};
-
-const mockCountriesResponse = {
-  data: {
-    countries: [
-      {
-        code: "GB",
-        name: "United Kingdom",
-        capital: "London",
-        currency: "GBP",
-        continent: { name: "Europe" },
-      },
-      {
-        code: "FR",
-        name: "France",
-        capital: "Paris",
-        currency: "EUR",
-        continent: { name: "Europe" },
-      },
-      {
-        code: "DE",
-        name: "Germany",
-        capital: "Berlin",
-        currency: "EUR",
-        continent: { name: "Europe" },
-      },
-      {
-        code: "IT",
-        name: "Italy",
-        capital: "Rome",
-        currency: "EUR",
-        continent: { name: "Europe" },
-      },
-      {
-        code: "ES",
-        name: "Spain",
-        capital: "Madrid",
-        currency: "EUR",
-        continent: { name: "Europe" },
-      },
-      {
-        code: "JP",
-        name: "Japan",
-        capital: "Tokyo",
-        currency: "JPY",
-        continent: { name: "Asia" },
-      },
-      {
-        code: "CN",
-        name: "China",
-        capital: "Beijing",
-        currency: "CNY",
-        continent: { name: "Asia" },
-      },
-      {
-        code: "KR",
-        name: "South Korea",
-        capital: "Seoul",
-        currency: "KRW",
-        continent: { name: "Asia" },
-      },
-      {
-        code: "IN",
-        name: "India",
-        capital: "New Delhi",
-        currency: "INR",
-        continent: { name: "Asia" },
-      },
-      {
-        code: "US",
-        name: "United States",
-        capital: "Washington, D.C.",
-        currency: "USD",
-        continent: { name: "North America" },
-      },
-      {
-        code: "CA",
-        name: "Canada",
-        capital: "Ottawa",
-        currency: "CAD",
-        continent: { name: "North America" },
-      },
-      {
-        code: "MX",
-        name: "Mexico",
-        capital: "Mexico City",
-        currency: "MXN",
-        continent: { name: "North America" },
-      },
-    ],
-  },
-};
-
 function App() {
-  const { updateData, updateColumns, updateCountries, countries } =
-    useTableState();
+  const { updateData, updateColumns, updateCountries } = useTableState();
   const { updateOptions } = useContinentOptions();
   const { continent, currency, countryCode } = useFilterState();
+  const { countries, continents, loading, error } = useCountryData();
 
   useEffect(() => {
-    const continentOptions = mockContinentsResponse.data.continents.map(
-      (continent) => ({
+    if (continents.length > 0) {
+      const continentOptions = continents.map((continent) => ({
         value: continent.name,
         label: continent.name,
-      })
-    );
+      }));
 
-    updateCountries(mockCountriesResponse.data.countries);
-    updateOptions(continentOptions);
-  }, [updateCountries, updateOptions]);
+      updateOptions(continentOptions);
+    }
+  }, [continents, updateOptions]);
+
+  useEffect(() => {
+    if (countries.length > 0) {
+      updateCountries(countries);
+    }
+  }, [countries, updateCountries]);
 
   useEffect(() => {
     if (countries.length > 0) {
@@ -137,6 +46,28 @@ function App() {
       updateData(data);
     }
   }, [countries, continent, currency, countryCode, updateColumns, updateData]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-gray-600">Loading countries data...</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-red-600">
+            Error loading data: {error.message}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
