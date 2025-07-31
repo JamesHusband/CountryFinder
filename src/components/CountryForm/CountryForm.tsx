@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { SearchFormContext } from "./SearchFormContext";
+import { CountryFormContext } from "./CountryFormContext";
 import { useSearchState, useFilterState } from "../../hooks";
 
 interface FormValues {
@@ -11,7 +11,7 @@ interface FormValues {
   countryName: string;
 }
 
-export const SearchForm: React.FC = () => {
+export const CountryForm: React.FC = () => {
   const { searchType } = useSearchState();
   const { continent, currency, countryCode } = useFilterState();
 
@@ -31,7 +31,7 @@ export const SearchForm: React.FC = () => {
         enableReinitialize={true}
       >
         <Form>
-          <SearchFormContext />
+          <CountryFormContext />
         </Form>
       </Formik>
     </div>

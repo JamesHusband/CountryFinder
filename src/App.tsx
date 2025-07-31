@@ -1,6 +1,6 @@
 import "./index.css";
 import { Layout, Status } from "./ui";
-import { SearchForm, DataTable } from "./components";
+import { CountryForm, DataTable } from "./components";
 import {
   useTableState,
   useContinentOptions,
@@ -90,7 +90,7 @@ function App() {
 
   return (
     <Layout>
-      <SearchForm />
+      <CountryForm />
       <DataTable />
     </Layout>
   );

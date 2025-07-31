@@ -18,7 +18,7 @@ interface FormValues {
   countryName: string;
 }
 
-export const SearchFormContext: React.FC = () => {
+export const CountryFormContext: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<FormValues>();
   const {
     updateContinent,
